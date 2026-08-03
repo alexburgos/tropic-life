@@ -1,0 +1,79 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@theme {
+	/* Brand red, taken from the Tropic Life hoodie. */
+	--color-brand-50: #fff1f1;
+	--color-brand-500: #e02a2a;
+	--color-brand-600: #c81f22;
+	--color-brand-700: #a4181b;
+
+	/* Tropical water, taken from the cover shot. */
+	--color-lagoon-300: #7fe3e0;
+	--color-lagoon-400: #3fc9c9;
+	--color-lagoon-500: #18a8ac;
+	--color-lagoon-700: #0d6d75;
+
+	/* Neutrals: warm sand for light sections, near-black ink for dark ones. */
+	--color-sand-50: #fbf8f3;
+	--color-sand-100: #f3ede2;
+	--color-sand-300: #ddd3c2;
+	--color-ink-800: #12201f;
+	--color-ink-900: #0a1413;
+	--color-ink-950: #050b0b;
+
+	--font-display: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+
+	/* Height of the sticky nav; drives scroll-margin so anchors don't land under it. */
+	--spacing-nav: 4.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	background-color: var(--color-ink-950);
+	color: var(--color-sand-50);
+	font-family: var(--font-display);
+	overflow-x: hidden;
+}
+
+/* Anchor targets clear the sticky nav. */
+[id] {
+	scroll-margin-top: var(--spacing-nav);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-lagoon-300);
+	outline-offset: 3px;
+}
+
+/* Paired with the `reveal` action: hidden until the element scrolls into view. */
+.reveal {
+	opacity: 0;
+	transform: translateY(1.5rem);
+	transition:
+		opacity 700ms ease-out,
+		transform 700ms ease-out;
+}
+
+.reveal.is-revealed {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}

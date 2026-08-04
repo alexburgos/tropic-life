@@ -22,7 +22,9 @@ IMAGE_QUALITY=78
 POSTER_QUALITY=70
 POSTER_TIMESTAMP=1          # seconds into the clip to grab the poster frame
 
-REEL_HEIGHT=720             # 405x720 output — the phone frame renders at ~400px wide
+# 540x960 output. The height has to keep the 9:16 width even for yuv420p: 720 would give
+# 405, which ffmpeg rounds to 406 and quietly stretches the frame by 0.2%.
+REEL_HEIGHT=960
 REEL_CRF=26
 REEL_PRESET=slow
 REEL_AUDIO_BITRATE=96k
@@ -39,23 +41,23 @@ cwebp -quiet -q "$IMAGE_QUALITY" -resize "$ABOUT_WIDTH" 0 \
   "$SRC_IMAGES/about.webp" -o "$OUT_IMAGES/about.webp"
 
 echo "==> Reels"
-# name|crop x-offset expression|trim (empty = full clip)
-# The x-offset centres the 9:16 window by default; nudge per clip if a subject sits off-centre.
+# name|trim (empty = full clip)
 REELS=(
-  "video-1-allure|(iw-ow)/2|-t 30"
-  "video-2-fiji|(iw-ow)/2|"
-  "video-3-hotel-vista-alegre|(iw-ow)/2|"
-  "video-3-prcocktail|(iw-ow)/2|"
+  "video-1-allure|-t 30"
+  "video-2-fiji|"
+  "video-3-hotel-vista-alegre|"
+  "video-3-prcocktail|"
 )
 
 for entry in "${REELS[@]}"; do
-  IFS='|' read -r name xoffset trim <<< "$entry"
-  src="$SRC_VIDEOS/$name.webm"
+  IFS='|' read -r name trim <<< "$entry"
+  src="$SRC_VIDEOS/$name.mp4"
   echo "    $name"
 
-  # 9:16 crop is baked in rather than done with CSS object-fit: cropping 1920x1080 in the
-  # browser would mean downloading ~68% pixels that are never painted.
-  filter="crop=ih*9/16:ih:$xoffset:0,scale=-2:$REEL_HEIGHT"
+  # Scale only, no crop: the sources are already 9:16 with square pixels, so any crop here
+  # would throw away real framing. Earlier masters were anamorphic (1920x1080 coded, 9:16
+  # display) and a coded-pixel crop cut them down to a third of the frame.
+  filter="scale=-2:$REEL_HEIGHT"
 
   # shellcheck disable=SC2086 # $trim is intentionally word-split into ffmpeg flags
   ffmpeg -loglevel error -y -i "$src" $trim \

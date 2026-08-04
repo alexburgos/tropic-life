@@ -22,7 +22,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label={social.label}
-						class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-sand-100 transition-colors hover:border-brand-500 hover:text-brand-500"
+						class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-sand-100 transition-colors hover:border-lagoon-500 hover:text-lagoon-500"
 					>
 						<SocialIcon name={social.label} class="h-4 w-4" />
 					</a>

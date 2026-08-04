@@ -3,27 +3,48 @@
 	import { page } from '$app/state';
 	import { site } from '$lib/site';
 
+	const SENTINEL_STYLE = 'position:absolute;height:1px;width:1px;pointer-events:none';
+
 	let isOpen = $state(false);
 	let isScrolled = $state(false);
+	let isPastCover = $state(false);
 
 	// Nav links are fragments on the home page, so they need a leading "/" everywhere else.
 	const isHome = $derived(page.url.pathname === '/');
 	const linkPrefix = $derived(isHome ? '' : '/');
 
+	// The hero already shows the site name at full size, so the wordmark waits for the cover.
+	const showWordmark = $derived(!isHome || isPastCover || isOpen);
+
 	onMount(() => {
-		// A sentinel at the top of the document is cheaper than a scroll listener.
-		const sentinel = document.createElement('div');
-		sentinel.style.cssText = 'position:absolute;top:0;height:1px;width:1px;pointer-events:none';
-		document.body.prepend(sentinel);
+		// Sentinels in the document are cheaper than a scroll listener.
+		const topSentinel = document.createElement('div');
+		topSentinel.style.cssText = `${SENTINEL_STYLE};top:0`;
+
+		// Measuring the hero element directly isn't an option: Nav is a sibling of <main>,
+		// so the page's content may not be in the DOM yet when this runs.
+		const coverSentinel = document.createElement('div');
+		coverSentinel.style.cssText = `${SENTINEL_STYLE};top:calc(100svh - var(--spacing-nav))`;
+
+		const sentinels = isHome ? [topSentinel, coverSentinel] : [topSentinel];
+		for (const sentinel of sentinels) document.body.prepend(sentinel);
 
 		const observer = new IntersectionObserver((entries) => {
-			isScrolled = !entries[0].isIntersecting;
+			for (const entry of entries) {
+				if (entry.target === topSentinel) {
+					isScrolled = !entry.isIntersecting;
+				} else {
+					// "Not intersecting" is ambiguous here: on first paint this sentinel is
+					// below the fold, not above it. Use its position instead.
+					isPastCover = entry.boundingClientRect.top < 0;
+				}
+			}
 		});
-		observer.observe(sentinel);
+		for (const sentinel of sentinels) observer.observe(sentinel);
 
 		return () => {
 			observer.disconnect();
-			sentinel.remove();
+			for (const sentinel of sentinels) sentinel.remove();
 		};
 	});
 
@@ -51,10 +72,12 @@
 	>
 		<a
 			href={isHome ? '#top' : '/'}
-			class="text-lg font-bold tracking-tight text-sand-50 sm:text-xl"
+			class="wordmark font-script text-xl text-sand-50 sm:text-2xl"
+			class:is-hidden={!showWordmark}
+			inert={!showWordmark}
 			onclick={() => (isOpen = false)}
 		>
-			Tropic<span class="text-brand-500">Life</span>
+			Tropic Life
 		</a>
 
 		<ul class="hidden items-center gap-8 md:flex">
@@ -117,3 +140,26 @@
 		</div>
 	{/if}
 </header>
+
+<style>
+	.wordmark {
+		transition:
+			opacity 300ms ease-out,
+			transform 300ms ease-out;
+	}
+
+	.wordmark.is-hidden {
+		opacity: 0;
+		transform: translateY(-0.5rem);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.wordmark {
+			transition: none;
+		}
+
+		.wordmark.is-hidden {
+			transform: none;
+		}
+	}
+</style>

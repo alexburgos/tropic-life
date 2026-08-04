@@ -25,8 +25,26 @@
 
 	--font-display: 'Avenir Next', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
 
+	/* Baseball script, matching the hoodie wordmark. Display sizes only — see @font-face. */
+	--font-script: 'Yellowtail', 'Snell Roundhand', cursive;
+
 	/* Height of the sticky nav; drives scroll-margin so anchors don't land under it. */
 	--spacing-nav: 4.5rem;
+}
+
+/*
+	Self-hosted rather than pulled from the Google CDN: one fewer third-party connection on
+	the critical path, and no request to fonts.gstatic.com from the visitor's browser.
+	Latin subset only — the site has no extended-latin copy.
+*/
+@font-face {
+	font-family: 'Yellowtail';
+	font-style: normal;
+	font-weight: 400;
+	font-display: swap;
+	src: url('/fonts/yellowtail-latin.woff2') format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+		U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -22,6 +22,14 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+	<!-- The hero wordmark is above the fold, so the swap shouldn't wait on CSS discovery. -->
+	<link
+		rel="preload"
+		href="/fonts/yellowtail-latin.woff2"
+		as="font"
+		type="font/woff2"
+		crossorigin="anonymous"
+	/>
 	<link rel="canonical" href={site.domain} />
 	<meta name="theme-color" content="#050b0b" />
 	<meta property="og:site_name" content={site.name} />

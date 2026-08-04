@@ -8,9 +8,8 @@
 
 <section id="contact" class="bg-sand-50 py-20 text-ink-900 sm:py-28">
 	<div class="reveal mx-auto max-w-3xl px-5 text-center sm:px-8" use:reveal>
-		<p class="text-xs font-semibold tracking-[0.3em] text-lagoon-700 uppercase">Contact</p>
-		<h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
-			Let's make something worth watching.
+		<h2 class="mt-4 font-script text-3xl leading-tight sm:text-6xl">
+			Want to work together?
 		</h2>
 		<p class="mt-6 text-lg leading-relaxed text-ink-800/85">
 			Tell me about your property, event or brand and I'll come back with availability and a quote.
@@ -18,14 +17,14 @@
 
 		<a
 			href={mailto}
-			class="mt-10 inline-flex items-center justify-center rounded-full bg-brand-600 px-10 py-4 text-base font-bold tracking-wide text-white transition-colors hover:bg-brand-700"
+			class="mt-10 inline-flex items-center justify-center rounded-full bg-lagoon-400 px-10 py-4 text-base font-bold tracking-wide text-white transition-colors hover:bg-lagoon-500"
 		>
-			Book a shoot
+		Send a message
 		</a>
 
 		<p class="mt-6 text-sm text-ink-800/70">
 			Or email directly:
-			<a href="mailto:{site.email}" class="font-semibold text-brand-600 underline underline-offset-4">
+			<a href="mailto:{site.email}" class="font-semibold text-lagoon-400 underline underline-offset-4">
 				{site.email}
 			</a>
 		</p>

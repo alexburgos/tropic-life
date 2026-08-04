@@ -14,25 +14,14 @@
 				loading="lazy"
 				decoding="async"
 			/>
-			<p
-				class="absolute -right-3 -bottom-6 rounded-xl bg-brand-600 px-5 py-4 text-center text-white shadow-xl sm:-right-6"
-			>
-				<span class="block text-3xl font-black leading-none">40+</span>
-				<span class="mt-1 block text-[0.65rem] font-semibold tracking-[0.2em] uppercase">
-					Airbnbs &amp; hotels
-				</span>
-			</p>
 		</div>
 
 		<div class="reveal mt-10 lg:mt-0" use:reveal>
-			<p class="text-xs font-semibold tracking-[0.3em] text-lagoon-700 uppercase">About me</p>
-			<h2 class="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
-				Visuals that make people book.
-			</h2>
+			<h2 class="font-semibold lg:text-2xl text-lagoon-700 tracking-normal uppercas">About me</h2>
 			<p class="mt-6 text-lg leading-relaxed text-ink-800/85">
 				As an Air Force veteran and travel content creator, I craft high-impact visuals, edited
 				photography and cinematic videos that elevate your brand's presence and drive meaningful
-				traffic and growth. Worked with over 40 Airbnbs &amp; hotels to create captivating
+				traffic and growth. Worked with <strong class="text-lagoon-700"> over 40 Airbnbs &amp; hotels </strong> to create captivating
 				promotional content.
 			</p>
 			<p class="mt-4 text-lg leading-relaxed text-ink-800/85">

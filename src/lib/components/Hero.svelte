@@ -16,25 +16,20 @@
 		decoding="async"
 	/>
 
-	<!--
-		Layered gradients rather than a flat darken: the water keeps its colour while the
-		type still clears WCAG contrast at the top and centre.
-	-->
 	<div
 		class="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/20 to-ink-950/80"
 		aria-hidden="true"
 	></div>
-	<!-- A soft pool behind the wordmark keeps it legible without flattening the whole photo. -->
 	<div class="hero-vignette absolute inset-0" aria-hidden="true"></div>
 
 	<div class="relative mx-auto max-w-4xl px-5 pt-nav text-center">
 		<h1
-			class="text-5xl leading-none font-black tracking-tight text-white drop-shadow-lg sm:text-7xl lg:text-8xl"
+			class="hero-text-shadow font-script text-6xl leading-tight text-white sm:text-8xl lg:text-9xl"
 		>
 			{site.name}
 		</h1>
 		<p
-			class="mt-6 text-xs font-semibold tracking-[0.2em] text-lagoon-300 uppercase sm:text-sm sm:tracking-[0.35em] lg:text-base"
+			class="hero-text-shadow mt-6 text-xs font-semibold tracking-normal text-lagoon-300 uppercase sm:text-lg sm:tracking-wide"
 		>
 			{site.tagline}
 		</p>
@@ -47,7 +42,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label={social.label}
-						class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-sm transition-colors hover:border-brand-500 hover:bg-brand-500"
+						class="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-sm transition-colors hover:border-lagbg-lagoon-400 hover:bg-lagoon-400"
 					>
 						<SocialIcon name={social.label} class="h-5 w-5" />
 					</a>
@@ -76,6 +71,10 @@
 </section>
 
 <style>
+	.hero-text-shadow {
+		text-shadow: 0 2px 24px color-mix(in srgb, var(--color-ink-950) 45%, transparent);
+	}
+
 	.hero-vignette {
 		background: radial-gradient(
 			ellipse at center,

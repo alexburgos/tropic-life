@@ -1,23 +1,19 @@
+
 <script lang="ts">
 	import { reveal } from '$lib/actions/reveal';
 	import { site } from '$lib/site';
 
 	const reels = site.reels;
+	const INITIAL_SLIDE_INDEX = 1;
 
 	let track = $state<HTMLDivElement | null>(null);
 	let section = $state<HTMLElement | null>(null);
 	let slides = $state<HTMLElement[]>([]);
 	let videos = $state<HTMLVideoElement[]>([]);
-
-	let activeIndex = $state(0);
+	let activeIndex = $state(INITIAL_SLIDE_INDEX);
 	let isSectionVisible = $state(false);
 	let isMuted = $state(true);
 
-	/**
-	 * The active slide is whichever one sits closest to the centre of the track. Measuring
-	 * distance beats an IntersectionObserver here: on wide screens several slides are fully
-	 * visible at once, so "is it intersecting" can't pick a winner.
-	 */
 	function updateActiveIndex(): void {
 		if (!track) return;
 
@@ -40,9 +36,18 @@
 		activeIndex = nearestIndex;
 	}
 
-	// Recalculate on scroll and resize, throttled to one measurement per frame.
+	// Deliberately not $state: this is a one-shot latch, nothing renders from it.
+	let hasSetInitialPosition = false;
+
 	$effect(() => {
 		if (!track) return;
+
+		// Waits for bind:this to fill the array — the effect re-runs once it does.
+		if (!hasSetInitialPosition && slides[INITIAL_SLIDE_INDEX]) {
+			hasSetInitialPosition = true;
+			// Instant: this is the starting position, not a transition the visitor asked for.
+			scrollToSlide(INITIAL_SLIDE_INDEX, 'auto');
+		}
 
 		let frame = 0;
 		const schedule = (): void => {
@@ -93,7 +98,7 @@
 		});
 	});
 
-	function scrollToSlide(index: number): void {
+	function scrollToSlide(index: number, behavior: ScrollBehavior = 'smooth'): void {
 		const clamped = Math.max(0, Math.min(index, reels.length - 1));
 		const slide = slides[clamped];
 		if (!track || !slide) return;
@@ -106,7 +111,7 @@
 
 		track.scrollTo({
 			left: track.scrollLeft + offsetToCentre,
-			behavior: prefersReducedMotion ? 'auto' : 'smooth'
+			behavior: prefersReducedMotion ? 'auto' : behavior
 		});
 	}
 
@@ -124,12 +129,7 @@
 <section id="work" class="bg-ink-950 py-20 sm:py-24" bind:this={section}>
 	<div class="mx-auto max-w-6xl px-5 sm:px-8">
 		<div class="reveal flex flex-wrap items-end justify-between gap-6" use:reveal>
-			<div>
-				<p class="text-xs font-semibold tracking-[0.3em] text-lagoon-400 uppercase">My work</p>
-				<h2 class="mt-4 text-4xl font-black tracking-tight text-sand-50 sm:text-5xl">
-					Recent reels.
-				</h2>
-			</div>
+		<h2 class="font-semibold lg:text-2xl tracking-normal text-lagoon-700 ">Recent work</h2>
 
 			<div class="flex items-center gap-3">
 				<button
@@ -201,13 +201,9 @@
 		</div>
 	</div>
 
-	<!--
-		The track is deliberately focusable: a scrollable region must be reachable by keyboard,
-		and arrow keys then move between reels.
-	-->
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions, a11y_no_noninteractive_tabindex -->
 	<div
-		class="carousel-track mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-[max(1.25rem,calc(50%-10rem))] pb-4 sm:gap-6"
+		class="carousel-track mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 sm:gap-6"
 		role="group"
 		aria-roledescription="carousel"
 		aria-label="Recent reels"
@@ -217,7 +213,7 @@
 	>
 		{#each reels as reel, index (reel.src)}
 			<figure
-				class="w-[min(20rem,78vw)] shrink-0 snap-center"
+				class="carousel-slide shrink-0 snap-center"
 				bind:this={slides[index]}
 				aria-roledescription="slide"
 				aria-label="{index + 1} of {reels.length}: {reel.title}"
@@ -241,9 +237,6 @@
 						bind:this={videos[index]}
 					></video>
 				</div>
-				<figcaption class="mt-4 text-center text-sm font-medium tracking-wide text-sand-300/70">
-					{reel.title}
-				</figcaption>
 			</figure>
 		{/each}
 	</div>
@@ -254,7 +247,7 @@
 				type="button"
 				class="h-2.5 rounded-full transition-all duration-300"
 				class:w-8={index === activeIndex}
-				class:bg-brand-500={index === activeIndex}
+				class:bg-lagoon-500={index === activeIndex}
 				class:w-2.5={index !== activeIndex}
 				class:bg-sand-300={index !== activeIndex}
 				class:opacity-40={index !== activeIndex}
@@ -272,7 +265,14 @@
 
 <style>
 	.carousel-track {
+		--slide-width: min(20rem, 78vw);
+
+		padding-inline: calc(50% - var(--slide-width) / 2);
 		scrollbar-width: none;
+	}
+
+	.carousel-slide {
+		width: var(--slide-width);
 	}
 
 	.carousel-track::-webkit-scrollbar {

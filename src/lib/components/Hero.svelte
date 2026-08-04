@@ -4,17 +4,28 @@
 </script>
 
 <section id="top" class="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
-	<img
-		src="/media/images/cover-1400.webp"
-		srcset="/media/images/cover-1400.webp 1400w, /media/images/cover-2000.webp 2000w"
-		sizes="100vw"
-		alt="Aerial view of turquoise water and mangrove cays in Puerto Rico"
-		class="absolute inset-0 h-full w-full object-cover"
-		width="2000"
-		height="1125"
-		fetchpriority="high"
-		decoding="async"
-	/>
+	<!--
+		AVIF first, webp as the fallback for Safari < 16.4. The srcset/sizes pair must stay in
+		sync with the preload in +page.svelte or the browser fetches the image twice.
+	-->
+	<picture>
+		<source
+			type="image/avif"
+			srcset="/media/images/cover-900.avif 900w, /media/images/cover-1400.avif 1400w, /media/images/cover-2000.avif 2000w"
+			sizes="100vw"
+		/>
+		<img
+			src="/media/images/cover-1400.webp"
+			srcset="/media/images/cover-900.webp 900w, /media/images/cover-1400.webp 1400w, /media/images/cover-2000.webp 2000w"
+			sizes="100vw"
+			alt="Aerial view of turquoise water and mangrove cays in Puerto Rico"
+			class="absolute inset-0 h-full w-full object-cover"
+			width="2000"
+			height="1125"
+			fetchpriority="high"
+			decoding="async"
+		/>
+	</picture>
 
 	<div
 		class="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/20 to-ink-950/80"

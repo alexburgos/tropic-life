@@ -15,10 +15,10 @@ OUT_IMAGES="static/media/images"
 OUT_VIDEOS="static/media/videos"
 
 # --- Encoding targets -------------------------------------------------------
-HERO_WIDTH_LARGE=2000
-HERO_WIDTH_SMALL=1400
+HERO_WIDTHS=(2000 1400 900)   # 900 keeps mid-size phones off the 1400 file
 ABOUT_WIDTH=800
 IMAGE_QUALITY=78
+HERO_AVIF_CRF=32              # ~55% smaller than the webp at visually equal quality
 POSTER_QUALITY=70
 POSTER_TIMESTAMP=1          # seconds into the clip to grab the poster frame
 
@@ -33,10 +33,20 @@ REEL_AUDIO_BITRATE=96k
 mkdir -p "$OUT_IMAGES" "$OUT_VIDEOS"
 
 echo "==> Images"
-cwebp -quiet -q "$IMAGE_QUALITY" -resize "$HERO_WIDTH_LARGE" 0 \
-  "$SRC_IMAGES/cover.webp" -o "$OUT_IMAGES/cover-2000.webp"
-cwebp -quiet -q "$IMAGE_QUALITY" -resize "$HERO_WIDTH_SMALL" 0 \
-  "$SRC_IMAGES/cover.webp" -o "$OUT_IMAGES/cover-1400.webp"
+for width in "${HERO_WIDTHS[@]}"; do
+  echo "    cover-$width"
+  cwebp -quiet -q "$IMAGE_QUALITY" -resize "$width" 0 \
+    "$SRC_IMAGES/cover.webp" -o "$OUT_IMAGES/cover-$width.webp"
+
+  # SVT-AV1 rather than libaom, which fails to allocate on a source this size.
+  # avif=1 puts SVT in still-image mode; -frames:v 1 keeps it to a single picture.
+  ffmpeg -loglevel error -y -i "$SRC_IMAGES/cover.webp" \
+    -vf "scale=$width:-2" \
+    -c:v libsvtav1 -crf "$HERO_AVIF_CRF" -svtav1-params avif=1 \
+    -frames:v 1 -pix_fmt yuv420p \
+    "$OUT_IMAGES/cover-$width.avif"
+done
+
 cwebp -quiet -q "$IMAGE_QUALITY" -resize "$ABOUT_WIDTH" 0 \
   "$SRC_IMAGES/about.webp" -o "$OUT_IMAGES/about.webp"
 

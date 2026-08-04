@@ -17,7 +17,7 @@
 		</div>
 
 		<div class="reveal mt-10 lg:mt-0" use:reveal>
-			<h2 class="font-semibold lg:text-2xl text-lagoon-700 tracking-normal uppercas">About me</h2>
+			<h2 class="lg:text-2xl text-lagoon-500 tracking-normal">About me</h2>
 			<p class="mt-6 text-lg leading-relaxed text-ink-800/85">
 				As an Air Force veteran and travel content creator, I craft high-impact visuals, edited
 				photography and cinematic videos that elevate your brand's presence and drive meaningful

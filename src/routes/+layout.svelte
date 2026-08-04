@@ -22,10 +22,10 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<!-- The hero wordmark is above the fold, so the swap shouldn't wait on CSS discovery. -->
+	<!-- The hero title is above the fold, so the swap shouldn't wait on CSS discovery. -->
 	<link
 		rel="preload"
-		href="/fonts/yellowtail-latin.woff2"
+		href="/fonts/montserrat-900-latin.woff2"
 		as="font"
 		type="font/woff2"
 		crossorigin="anonymous"

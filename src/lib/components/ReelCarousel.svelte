@@ -129,7 +129,7 @@
 <section id="work" class="bg-ink-950 py-20 sm:py-24" bind:this={section}>
 	<div class="mx-auto max-w-6xl px-5 sm:px-8">
 		<div class="reveal flex flex-wrap items-end justify-between gap-6" use:reveal>
-		<h2 class="font-semibold lg:text-2xl tracking-normal text-lagoon-700 ">Recent work</h2>
+		<h2 class="lg:text-2xl tracking-normal text-lagoon-400">Recent work</h2>
 
 			<div class="flex items-center gap-3">
 				<button

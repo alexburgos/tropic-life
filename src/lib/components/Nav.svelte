@@ -72,7 +72,7 @@
 	>
 		<a
 			href={isHome ? '#top' : '/'}
-			class="wordmark font-script text-xl text-sand-50 sm:text-2xl"
+			class="wordmark font-heading text-xl font-black tracking-tight text-lagoon-400 sm:text-2xl"
 			class:is-hidden={!showWordmark}
 			inert={!showWordmark}
 			onclick={() => (isOpen = false)}

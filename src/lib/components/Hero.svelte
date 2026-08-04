@@ -35,7 +35,7 @@
 
 	<div class="relative mx-auto max-w-4xl px-5 pt-nav text-center">
 		<h1
-			class="hero-text-shadow font-script text-6xl leading-tight text-white sm:text-8xl lg:text-9xl"
+			class="hero-text-shadow text-5xl leading-tight tracking-tight text-white md:text-6xl lg:text-8xl"
 		>
 			{site.name}
 		</h1>

@@ -8,7 +8,7 @@
 
 <section id="contact" class="bg-sand-50 py-20 text-ink-900 sm:py-28">
 	<div class="reveal mx-auto max-w-3xl px-5 text-center sm:px-8" use:reveal>
-		<h2 class="mt-4 font-script text-3xl leading-tight sm:text-6xl">
+		<h2 class="mt-4 text-2xl leading-tight md:text-4xl">
 			Want to work together?
 		</h2>
 		<p class="mt-6 text-lg leading-relaxed text-ink-800/85">

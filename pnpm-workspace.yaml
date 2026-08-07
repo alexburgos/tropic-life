@@ -1,3 +1,6 @@
 allowBuilds:
   '@tailwindcss/oxide': true
   esbuild: true
+  # Cloudflare's deploy step installs wrangler, which pulls in workerd. Its postinstall
+  # has to be approved here or the deploy aborts with ERR_PNPM_IGNORED_BUILDS.
+  workerd: true

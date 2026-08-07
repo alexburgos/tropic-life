@@ -39,7 +39,7 @@ export const site: SiteConfig = {
 	domain: 'https://tropiclifepr.com',
 	description:
 		'Air Force veteran and travel content creator in Puerto Rico. Cinematic video and edited photography for Airbnbs, hotels, events and gastronomy.',
-	email: 'hello@tropiclifepr.com',
+	email: 'eric@tropiclifepr.com',
 	socials: [
 		{ label: 'Facebook', href: 'https://facebook.com/tropiclifepr' },
 		{ label: 'Instagram', href: 'https://instagram.com/tropiclifepr' }

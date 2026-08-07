@@ -1,6 +1,5 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import Nav from '$lib/components/Nav.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { site } from '$lib/site';
@@ -21,7 +20,15 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<!--
+		Served straight from static/ rather than imported through Vite: browsers request
+		/favicon.ico at a fixed path, so it must not get a hashed filename.
+	-->
+	<link rel="icon" href="/favicon.ico" sizes="any" />
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="manifest" href="/site.webmanifest" />
 	<!-- The hero title is above the fold, so the swap shouldn't wait on CSS discovery. -->
 	<link
 		rel="preload"
